@@ -3,26 +3,26 @@
 import { motion } from 'framer-motion';
 import { ReactNode } from 'react';
 
-interface CardProps {
+interface GlassCardProps {
   children: ReactNode;
   className?: string;
-  title?: string;
+  hover?: boolean;
 }
 
-export default function Card({ children, className = '', title }: CardProps) {
+export default function GlassCard({ children, className = '', hover = true }: GlassCardProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.2 }}
+      whileHover={hover ? { y: -4, transition: { duration: 0.2 } } : {}}
       className={`
         relative overflow-hidden
         bg-white/5 backdrop-blur-xl
         border border-white/10
         rounded-2xl shadow-xl
-        p-6
-        hover:bg-white/[0.07] hover:border-white/20
         transition-all duration-200
+        ${hover ? 'hover:bg-white/[0.07] hover:border-white/20 hover:shadow-2xl' : ''}
         ${className}
       `}
     >
@@ -31,11 +31,6 @@ export default function Card({ children, className = '', title }: CardProps) {
       
       {/* Content */}
       <div className="relative z-10">
-        {title && (
-          <h3 className="text-lg font-semibold text-white mb-4 flex items-center">
-            {title}
-          </h3>
-        )}
         {children}
       </div>
     </motion.div>

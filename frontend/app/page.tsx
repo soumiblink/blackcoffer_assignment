@@ -2,19 +2,22 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { isAuthenticated } from '@/lib/auth';
 
 export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    router.push('/dashboard');
+    if (isAuthenticated()) {
+      router.push('/dashboard');
+    } else {
+      router.push('/login');
+    }
   }, [router]);
 
   return (
     <div className="flex items-center justify-center min-h-screen">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Loading Dashboard...</h1>
-      </div>
+      <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600"></div>
     </div>
   );
 }

@@ -12,22 +12,71 @@ interface Props {
   data: DataPoint[];
 }
 
+const CustomTooltip = ({ active, payload }: any) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-slate-900/95 backdrop-blur-xl border border-white/20 rounded-xl p-3 shadow-xl">
+        <p className="text-white font-medium">{payload[0].payload.city}</p>
+        <p className="text-blue-400 text-sm">
+          Count: <span className="font-semibold">{payload[0].value}</span>
+        </p>
+      </div>
+    );
+  }
+  return null;
+};
+
 export default function CityDistribution({ data }: Props) {
-  const chartData = data.map(item => ({
-    city: item._id,
-    count: item.count,
-  }));
+  if (!data || data.length === 0) {
+    return (
+      <Card title="City Distribution">
+        <div className="flex items-center justify-center h-[300px] text-gray-400">
+          No data available
+        </div>
+      </Card>
+    );
+  }
+
+  const chartData = data
+    .filter(item => item._id && item.count > 0)
+    .slice(0, 10)
+    .map(item => ({
+      city: item._id.length > 20 ? item._id.substring(0, 17) + '...' : item._id,
+      count: item.count,
+    }));
+
+  if (chartData.length === 0) {
+    return (
+      <Card title="City Distribution">
+        <div className="flex items-center justify-center h-[300px] text-gray-400">
+          No data available
+        </div>
+      </Card>
+    );
+  }
 
   return (
     <Card title="City Distribution">
       <ResponsiveContainer width="100%" height={300}>
         <BarChart data={chartData}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="city" angle={-45} textAnchor="end" height={100} fontSize={12} />
-          <YAxis />
-          <Tooltip />
-          <Legend />
-          <Bar dataKey="count" fill="#ec4899" />
+          <CartesianGrid strokeDasharray="3 3" stroke="#334155" opacity={0.3} />
+          <XAxis 
+            dataKey="city" 
+            angle={-45} 
+            textAnchor="end" 
+            height={100} 
+            fontSize={12}
+            stroke="#94a3b8"
+          />
+          <YAxis stroke="#94a3b8" />
+          <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(59, 130, 246, 0.1)' }} />
+          <Legend wrapperStyle={{ color: '#94a3b8' }} />
+          <Bar 
+            dataKey="count" 
+            fill="#3b82f6"
+            radius={[8, 8, 0, 0]}
+            animationDuration={800}
+          />
         </BarChart>
       </ResponsiveContainer>
     </Card>
