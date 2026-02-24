@@ -9,7 +9,7 @@ A premium, production-ready data visualization dashboard featuring a modern glas
 
 ## 🎯 Overview
 
-DataViz is an enterprise-grade analytics dashboard that transforms complex data into beautiful, interactive visualizations. Designed with a Silicon Valley aesthetic featuring glassmorphism design, smooth animations, and a cyan/blue color scheme.
+DataViz is an enterprise-grade analytics dashboard that transforms complex data into beautiful, interactive visualizations. Designed with glassmorphism design, smooth animations, and a cyan/blue color scheme.
 
 ### ✨ Key Features
 
@@ -419,15 +419,6 @@ NEXT_PUBLIC_API_URL=<your-backend-url>/api
 - `npm start` - Start production server
 - `npm run lint` - Run ESLint
 
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
 
 ## 📝 License
 
