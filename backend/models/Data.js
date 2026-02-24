@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 
+
 const dataSchema = new mongoose.Schema({
   end_year: { type: String, default: '' },
   intensity: { type: Number, default: 0 },
