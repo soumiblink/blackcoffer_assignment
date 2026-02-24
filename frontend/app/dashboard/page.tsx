@@ -53,7 +53,20 @@ export default function Dashboard() {
     try {
       setLoading(true);
       const response = await getDashboardData();
-      setData(response.data);
+      console.log('Dashboard data loaded:', JSON.stringify(response, null, 2));
+      
+      // Ensure stats object exists
+      const dashboardData = {
+        ...response.data,
+        stats: response.data.stats || {
+          totalRecords: 0,
+          avgIntensity: 0,
+          avgRelevance: 0,
+          avgLikelihood: 0
+        }
+      };
+      
+      setData(dashboardData);
     } catch (error) {
       console.error('Error loading dashboard data:', error);
     } finally {
@@ -78,10 +91,34 @@ export default function Dashboard() {
 
       const hasFilters = Object.values(filterParams).some(v => v !== undefined);
 
+      console.log('Applying filters:', filterParams);
+      console.log('Has filters:', hasFilters);
+
       if (hasFilters) {
         const response = await filterData(filterParams);
-        // Update data with filtered results
-        setData(response.data);
+        console.log('Filtered data received:', JSON.stringify(response, null, 2));
+        console.log('Chart data lengths:', {
+          intensityByCountry: response.data?.intensityByCountry?.length,
+          relevanceByTopic: response.data?.relevanceByTopic?.length,
+          likelihoodByRegion: response.data?.likelihoodByRegion?.length,
+          trendsByYear: response.data?.trendsByYear?.length,
+          cityDistribution: response.data?.cityDistribution?.length,
+          sectorDistribution: response.data?.sectorDistribution?.length,
+          regionDistribution: response.data?.regionDistribution?.length,
+        });
+        
+        // Ensure stats object exists
+        const filteredData = {
+          ...response.data,
+          stats: response.data.stats || {
+            totalRecords: 0,
+            avgIntensity: 0,
+            avgRelevance: 0,
+            avgLikelihood: 0
+          }
+        };
+        
+        setData(filteredData);
       } else {
         await loadDashboardData();
       }
@@ -141,25 +178,25 @@ export default function Dashboard() {
         >
           <StatCard
             title="Total Records"
-            value={data.stats.totalRecords?.toLocaleString() || 0}
+            value={data?.stats?.totalRecords?.toLocaleString() || '0'}
             icon={TrendingUp}
             color="bg-gradient-to-br from-cyan-500 to-cyan-600"
           />
           <StatCard
             title="Avg Intensity"
-            value={data.stats.avgIntensity?.toFixed(2) || 0}
+            value={data?.stats?.avgIntensity?.toFixed(2) || '0.00'}
             icon={Activity}
             color="bg-gradient-to-br from-blue-500 to-blue-600"
           />
           <StatCard
             title="Avg Relevance"
-            value={data.stats.avgRelevance?.toFixed(2) || 0}
+            value={data?.stats?.avgRelevance?.toFixed(2) || '0.00'}
             icon={Target}
             color="bg-gradient-to-br from-sky-500 to-sky-600"
           />
           <StatCard
             title="Avg Likelihood"
-            value={data.stats.avgLikelihood?.toFixed(2) || 0}
+            value={data?.stats?.avgLikelihood?.toFixed(2) || '0.00'}
             icon={Zap}
             color="bg-gradient-to-br from-indigo-500 to-indigo-600"
           />
@@ -186,20 +223,20 @@ export default function Dashboard() {
             )}
 
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-              <IntensityByCountry data={data.intensityByCountry} />
-              <LikelihoodByRegion data={data.likelihoodByRegion} />
+              <IntensityByCountry key={`intensity-${data.stats.totalRecords}`} data={data.intensityByCountry} />
+              <LikelihoodByRegion key={`likelihood-${data.stats.totalRecords}`} data={data.likelihoodByRegion} />
             </div>
 
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-              <RelevanceByTopic data={data.relevanceByTopic} />
-              <SectorDistribution data={data.sectorDistribution} />
+              <RelevanceByTopic key={`relevance-${data.stats.totalRecords}`} data={data.relevanceByTopic} />
+              <SectorDistribution key={`sector-${data.stats.totalRecords}`} data={data.sectorDistribution} />
             </div>
 
-            <YearTrend data={data.trendsByYear} />
+            <YearTrend key={`year-${data.stats.totalRecords}`} data={data.trendsByYear} />
 
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-              <CityDistribution data={data.cityDistribution} />
-              <RegionDistribution data={data.regionDistribution} />
+              <CityDistribution key={`city-${data.stats.totalRecords}`} data={data.cityDistribution} />
+              <RegionDistribution key={`region-${data.stats.totalRecords}`} data={data.regionDistribution} />
             </div>
           </motion.div>
 

@@ -16,6 +16,15 @@ mongoose.connect(process.env.MONGO_URI)
 app.use(cors());
 app.use(express.json());
 
+// Log all requests
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
+  if (req.method === 'POST') {
+    console.log('Request body:', req.body);
+  }
+  next();
+});
+
 // Routes
 app.use('/api', dataRoutes);
 

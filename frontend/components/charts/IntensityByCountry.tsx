@@ -29,10 +29,13 @@ const CustomTooltip = ({ active, payload, label }: any) => {
 };
 
 export default function IntensityByCountry({ data }: Props) {
+  console.log('IntensityByCountry received data:', data);
+  
   if (!data || data.length === 0) {
+    console.log('IntensityByCountry: No data or empty array');
     return (
       <Card title="Intensity by Country">
-        <div className="flex items-center justify-center h-[300px] text-gray-500">
+        <div className="flex items-center justify-center h-[300px] text-gray-400">
           No data available
         </div>
       </Card>
@@ -47,10 +50,13 @@ export default function IntensityByCountry({ data }: Props) {
       intensity: parseFloat(item.avgIntensity.toFixed(2)),
     }));
 
+  console.log('IntensityByCountry chartData:', chartData);
+
   if (chartData.length === 0) {
+    console.log('IntensityByCountry: chartData is empty after filtering');
     return (
       <Card title="Intensity by Country">
-        <div className="flex items-center justify-center h-[300px] text-gray-500">
+        <div className="flex items-center justify-center h-[300px] text-gray-400">
           No data available
         </div>
       </Card>
