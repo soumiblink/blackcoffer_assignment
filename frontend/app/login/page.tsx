@@ -19,20 +19,20 @@ export default function LoginPage() {
     setError('');
     setLoading(true);
 
-    // Simple validation
+   
     if (!email || !password) {
       setError('Please fill in all fields');
       setLoading(false);
       return;
     }
 
-    // Simulate login (in real app, call your API)
+    
     setTimeout(() => {
       const users = JSON.parse(localStorage.getItem('users') || '[]');
       const user = users.find((u: any) => u.email === email && u.password === password);
 
       if (user) {
-        // Store session
+        
         localStorage.setItem('currentUser', JSON.stringify({
           email: user.email,
           name: user.name,
@@ -48,7 +48,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-4 relative overflow-hidden">
-      {/* Animated background elements */}
+      
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
           animate={{
@@ -82,7 +82,7 @@ export default function LoginPage() {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-8 relative overflow-hidden"
         >
-          {/* Animated border glow */}
+          
           <motion.div
             animate={{
               opacity: [0.5, 1, 0.5],

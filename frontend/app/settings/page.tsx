@@ -57,7 +57,7 @@ export default function SettingsPage() {
       <Navbar />
       
       <main className="p-8 max-w-[1400px] mx-auto">
-        {/* Header */}
+       
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -84,7 +84,7 @@ export default function SettingsPage() {
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Appearance Section */}
+         
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -143,7 +143,7 @@ export default function SettingsPage() {
             </div>
           </motion.div>
 
-          {/* Notifications Section */}
+         
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -203,7 +203,7 @@ export default function SettingsPage() {
           </motion.div>
         </div>
 
-        {/* Data Preferences Section */}
+        
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

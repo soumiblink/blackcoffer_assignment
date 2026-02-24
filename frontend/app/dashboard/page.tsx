@@ -41,7 +41,7 @@ export default function Dashboard() {
   const router = useRouter();
 
   useEffect(() => {
-    // Check authentication
+    
     if (!isAuthenticated()) {
       router.push('/login');
       return;
@@ -55,7 +55,7 @@ export default function Dashboard() {
       const response = await getDashboardData();
       console.log('Dashboard data loaded:', JSON.stringify(response, null, 2));
       
-      // Ensure stats object exists
+      
       const dashboardData = {
         ...response.data,
         stats: response.data.stats || {
@@ -78,7 +78,7 @@ export default function Dashboard() {
     try {
       setLoading(true);
       
-      // Build filter params, converting empty strings to undefined
+      
       const filterParams = {
         endYear: filters.endYear || undefined,
         topic: filters.topic || undefined,
@@ -91,7 +91,7 @@ export default function Dashboard() {
         city: filters.city || undefined,
       };
 
-      // Check if any filter has an actual value (not undefined)
+      
       const hasFilters = Object.values(filterParams).some(v => v !== undefined && v !== '');
 
       console.log('Applying filters:', filterParams);
@@ -110,7 +110,7 @@ export default function Dashboard() {
           regionDistribution: response.data?.regionDistribution?.length,
         });
         
-        // Ensure stats object exists
+       
         const filteredData = {
           ...response.data,
           stats: response.data.stats || {
@@ -158,7 +158,7 @@ export default function Dashboard() {
       <Navbar />
       
       <main className="p-8 max-w-[1920px] mx-auto">
-        {/* Header */}
+       
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -173,7 +173,7 @@ export default function Dashboard() {
           </p>
         </motion.div>
 
-        {/* Stats Grid */}
+        
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -206,7 +206,7 @@ export default function Dashboard() {
           />
         </motion.div>
 
-        {/* Charts Grid */}
+        
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

@@ -41,22 +41,22 @@ export default function RegisterPage() {
       return;
     }
 
-    // Simulate registration
+    
     setTimeout(() => {
       const users = JSON.parse(localStorage.getItem('users') || '[]');
       
-      // Check if user already exists
+      
       if (users.find((u: any) => u.email === email)) {
         setError('Email already registered');
         setLoading(false);
         return;
       }
 
-      // Add new user
+      
       users.push({ name, email, password });
       localStorage.setItem('users', JSON.stringify(users));
 
-      // Auto login
+      
       localStorage.setItem('currentUser', JSON.stringify({
         email,
         name,
@@ -69,7 +69,7 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-4 relative overflow-hidden">
-      {/* Animated background elements */}
+      
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
           animate={{
@@ -103,7 +103,7 @@ export default function RegisterPage() {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl p-8 relative overflow-hidden"
         >
-          {/* Animated border glow */}
+          
           <motion.div
             animate={{
               opacity: [0.5, 1, 0.5],
