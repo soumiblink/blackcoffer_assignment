@@ -17,7 +17,7 @@ const CustomTooltip = ({ active, payload }: any) => {
     return (
       <div className="bg-slate-900/95 backdrop-blur-xl border border-white/20 rounded-xl p-3 shadow-xl">
         <p className="text-white font-medium">{payload[0].payload.city}</p>
-        <p className="text-blue-400 text-sm">
+        <p className="text-pink-400 text-sm">
           Count: <span className="font-semibold">{payload[0].value}</span>
         </p>
       </div>
@@ -69,11 +69,11 @@ export default function CityDistribution({ data }: Props) {
             stroke="#94a3b8"
           />
           <YAxis stroke="#94a3b8" />
-          <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(59, 130, 246, 0.1)' }} />
+          <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(236, 72, 153, 0.1)' }} />
           <Legend wrapperStyle={{ color: '#94a3b8' }} />
           <Bar 
             dataKey="count" 
-            fill="#3b82f6"
+            fill="#ec4899"
             radius={[8, 8, 0, 0]}
             animationDuration={800}
           />

@@ -18,7 +18,7 @@ const CustomTooltip = ({ active, payload }: any) => {
     return (
       <div className="bg-slate-900/95 backdrop-blur-xl border border-white/20 rounded-xl p-3 shadow-xl">
         <p className="text-white font-medium">{payload[0].payload.region}</p>
-        <p className="text-cyan-400 text-sm">
+        <p className="text-emerald-400 text-sm">
           Likelihood: <span className="font-semibold">{payload[0].value}</span>
         </p>
       </div>
@@ -69,11 +69,11 @@ export default function LikelihoodByRegion({ data }: Props) {
             stroke="#94a3b8"
           />
           <YAxis stroke="#94a3b8" />
-          <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(6, 182, 212, 0.1)' }} />
+          <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(16, 185, 129, 0.1)' }} />
           <Legend wrapperStyle={{ color: '#94a3b8' }} />
           <Bar 
             dataKey="likelihood" 
-            fill="#06b6d4"
+            fill="#10b981"
             radius={[8, 8, 0, 0]}
             animationDuration={800}
           />

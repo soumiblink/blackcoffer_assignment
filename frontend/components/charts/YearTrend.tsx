@@ -19,7 +19,7 @@ const CustomTooltip = ({ active, payload, label }: any) => {
     return (
       <div className="bg-slate-900/95 backdrop-blur-xl border border-white/20 rounded-xl p-3 shadow-2xl">
         <p className="text-white font-semibold text-sm mb-1">Year: {label}</p>
-        <p className="text-cyan-400 text-sm">
+        <p className="text-blue-400 text-sm">
           Intensity: <span className="font-bold">{payload[0].value.toFixed(2)}</span>
         </p>
       </div>
@@ -68,8 +68,8 @@ export default function YearTrend({ data }: Props) {
           <AreaChart data={chartData} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
             <defs>
               <linearGradient id="colorArea" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#06b6d4" stopOpacity={0.4}/>
-                <stop offset="100%" stopColor="#3b82f6" stopOpacity={0.05}/>
+                <stop offset="0%" stopColor="#3b82f6" stopOpacity={0.5}/>
+                <stop offset="100%" stopColor="#8b5cf6" stopOpacity={0.05}/>
               </linearGradient>
             </defs>
             <CartesianGrid strokeDasharray="3 3" stroke="#ffffff10" vertical={false} />
@@ -86,7 +86,7 @@ export default function YearTrend({ data }: Props) {
             <Area
               type="monotone"
               dataKey="intensity"
-              stroke="#06b6d4"
+              stroke="#3b82f6"
               strokeWidth={3}
               fill="url(#colorArea)"
               animationDuration={1000}

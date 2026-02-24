@@ -13,14 +13,14 @@ interface Props {
   data: DataPoint[];
 }
 
-const COLORS = ['#06b6d4', '#3b82f6', '#0ea5e9', '#2563eb', '#22d3ee', '#60a5fa', '#0284c7', '#1d4ed8'];
+const COLORS = ['#f59e0b', '#10b981', '#3b82f6', '#8b5cf6', '#ec4899', '#06b6d4', '#f97316', '#84cc16'];
 
 const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
     return (
       <div className="bg-slate-900/95 backdrop-blur-xl border border-white/20 rounded-xl p-3 shadow-2xl">
         <p className="text-white font-semibold text-sm mb-1">{payload[0].name}</p>
-        <p className="text-cyan-400 text-sm">
+        <p className="text-amber-400 text-sm">
           Count: <span className="font-bold">{payload[0].value}</span>
         </p>
       </div>

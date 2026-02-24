@@ -14,16 +14,16 @@ interface Props {
 }
 
 const COLORS = [
-  '#06b6d4', // cyan
+  '#8b5cf6', // violet
+  '#ec4899', // pink
+  '#f59e0b', // amber
+  '#10b981', // emerald
   '#3b82f6', // blue
-  '#0ea5e9', // sky
-  '#2563eb', // blue-600
-  '#22d3ee', // cyan-400
-  '#60a5fa', // blue-400
-  '#0284c7', // sky-600
-  '#1d4ed8', // blue-700
-  '#67e8f9', // cyan-300
-  '#93c5fd', // blue-300
+  '#f97316', // orange
+  '#06b6d4', // cyan
+  '#84cc16', // lime
+  '#6366f1', // indigo
+  '#14b8a6', // teal
 ];
 
 const CustomTooltip = ({ active, payload }: any) => {
@@ -31,7 +31,7 @@ const CustomTooltip = ({ active, payload }: any) => {
     return (
       <div className="bg-slate-900/95 backdrop-blur-xl border border-white/20 rounded-xl p-3 shadow-xl">
         <p className="text-white font-medium">{payload[0].name}</p>
-        <p className="text-cyan-400 text-sm">
+        <p className="text-violet-400 text-sm">
           Relevance: <span className="font-semibold">{payload[0].value}</span>
         </p>
       </div>
