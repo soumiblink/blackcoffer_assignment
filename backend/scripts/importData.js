@@ -29,7 +29,7 @@ const importData = async () => {
     const rawData = fs.readFileSync(jsonPath, 'utf-8');
     const jsonData = JSON.parse(rawData);
 
-    // Clean empty values
+    
     const cleanedData = jsonData.map(item => {
       const cleaned = {};
       for (const key in item) {

@@ -10,7 +10,7 @@ const getAllData = async (req, res) => {
   }
 };
 
-// Get filter options
+
 const getFilterOptions = async (req, res) => {
   try {
     const [endYears, topics, sectors, regions, pestles, sources, swots, countries, cities] = await Promise.all([
@@ -44,7 +44,7 @@ const getFilterOptions = async (req, res) => {
   }
 };
 
-// Get dashboard aggregated data
+
 const getDashboardData = async (req, res) => {
   try {
     const [
@@ -57,7 +57,7 @@ const getDashboardData = async (req, res) => {
       regionDistribution,
       stats
     ] = await Promise.all([
-      // Intensity by Country
+     
       Data.aggregate([
         { $match: { country: { $ne: '' }, intensity: { $gt: 0 } } },
         { $group: { _id: '$country', avgIntensity: { $avg: '$intensity' }, count: { $sum: 1 } } },
@@ -65,7 +65,7 @@ const getDashboardData = async (req, res) => {
         { $limit: 15 }
       ]),
       
-      // Relevance by Topic
+     
       Data.aggregate([
         { $match: { topic: { $ne: '' }, relevance: { $gt: 0 } } },
         { $group: { _id: '$topic', avgRelevance: { $avg: '$relevance' }, count: { $sum: 1 } } },
@@ -73,14 +73,14 @@ const getDashboardData = async (req, res) => {
         { $limit: 10 }
       ]),
       
-      // Likelihood by Region
+     
       Data.aggregate([
         { $match: { region: { $ne: '' }, likelihood: { $gt: 0 } } },
         { $group: { _id: '$region', avgLikelihood: { $avg: '$likelihood' }, count: { $sum: 1 } } },
         { $sort: { avgLikelihood: -1 } }
       ]),
       
-      // Trends by Year
+      
       Data.aggregate([
         { $match: { end_year: { $ne: '' }, intensity: { $gt: 0 } } },
         { $group: { _id: '$end_year', avgIntensity: { $avg: '$intensity' }, count: { $sum: 1 } } },
@@ -88,7 +88,7 @@ const getDashboardData = async (req, res) => {
         { $limit: 20 }
       ]),
       
-      // City Distribution
+     
       Data.aggregate([
         { $match: { city: { $ne: '' } } },
         { $group: { _id: '$city', count: { $sum: 1 } } },
@@ -96,21 +96,21 @@ const getDashboardData = async (req, res) => {
         { $limit: 10 }
       ]),
       
-      // Sector Distribution
+     
       Data.aggregate([
         { $match: { sector: { $ne: '' } } },
         { $group: { _id: '$sector', count: { $sum: 1 } } },
         { $sort: { count: -1 } }
       ]),
       
-      // Region Distribution
+   
       Data.aggregate([
         { $match: { region: { $ne: '' } } },
         { $group: { _id: '$region', count: { $sum: 1 } } },
         { $sort: { count: -1 } }
       ]),
       
-      // Overall Stats
+     
       Data.aggregate([
         {
           $group: {
@@ -151,7 +151,7 @@ const filterData = async (req, res) => {
     console.log('=== FILTER REQUEST ===');
     console.log('Request body:', req.body);
     
-    // Build base query - only add filters that have actual values
+    
     const baseQuery = {};
     
     if (endYear && endYear !== '') baseQuery.end_year = endYear;
@@ -166,11 +166,11 @@ const filterData = async (req, res) => {
 
     console.log('Base query:', JSON.stringify(baseQuery, null, 2));
     
-    // Test: Check if any data matches the base query
+    
     const testCount = await Data.countDocuments(baseQuery);
     console.log('Documents matching base query:', testCount);
     
-    // Test: Get sample documents
+    
     const sampleDocs = await Data.find(baseQuery).limit(3);
     console.log('Sample documents:', JSON.stringify(sampleDocs, null, 2));
 
@@ -184,7 +184,7 @@ const filterData = async (req, res) => {
       regionDistribution,
       stats
     ] = await Promise.all([
-      // Intensity by Country - don't override country filter
+      
       Data.aggregate([
         { 
           $match: { 
@@ -198,7 +198,7 @@ const filterData = async (req, res) => {
         { $limit: 15 }
       ]),
       
-      // Relevance by Topic - don't override topic filter
+      
       Data.aggregate([
         { 
           $match: { 
@@ -212,7 +212,7 @@ const filterData = async (req, res) => {
         { $limit: 10 }
       ]),
       
-      // Likelihood by Region - don't override region filter
+      
       Data.aggregate([
         { 
           $match: { 
@@ -225,7 +225,7 @@ const filterData = async (req, res) => {
         { $sort: { avgLikelihood: -1 } }
       ]),
       
-      // Trends by Year - don't override endYear filter
+     
       Data.aggregate([
         { 
           $match: { 
@@ -239,7 +239,7 @@ const filterData = async (req, res) => {
         { $limit: 20 }
       ]),
       
-      // City Distribution - don't override city filter
+      
       Data.aggregate([
         { 
           $match: { 
@@ -252,7 +252,7 @@ const filterData = async (req, res) => {
         { $limit: 10 }
       ]),
       
-      // Sector Distribution - don't override sector filter
+     
       Data.aggregate([
         { 
           $match: { 
@@ -264,7 +264,7 @@ const filterData = async (req, res) => {
         { $sort: { count: -1 } }
       ]),
       
-      // Region Distribution - don't override region filter
+    
       Data.aggregate([
         { 
           $match: { 
@@ -276,7 +276,7 @@ const filterData = async (req, res) => {
         { $sort: { count: -1 } }
       ]),
       
-      // Stats for filtered data
+      
       Data.aggregate([
         { $match: baseQuery },
         {
