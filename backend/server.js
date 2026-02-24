@@ -1,23 +1,22 @@
 require('dotenv').config();
+
 const express = require('express');
 const cors = require('cors');
-const connectDB = require('./config/db');
+const mongoose = require('mongoose'); // ✅ ADD THIS
 const dataRoutes = require('./routes/dataRoutes');
 
 const app = express();
 
-// Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
-.then(() => console.log("MongoDB Connected"))
-.catch(err => console.error("MongoDB connection error:", err));
+// Connect to MongoDB Atlas
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB Connected"))
+  .catch(err => console.error("MongoDB connection error:", err));
 
 // Middleware
 app.use(cors({
   origin: "*"
 }));
+
 app.use(express.json());
 
 // Routes
@@ -28,6 +27,7 @@ app.get('/', (req, res) => {
   res.json({ message: 'Dashboard API is running' });
 });
 
+// Port
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
