@@ -165,7 +165,8 @@ const filterData = async (req, res) => {
       trendsByYear,
       cityDistribution,
       sectorDistribution,
-      regionDistribution
+      regionDistribution,
+      stats
     ] = await Promise.all([
       Data.aggregate([
         { $match: { ...query, country: { $ne: '' }, intensity: { $gt: 0 } } },
@@ -211,6 +212,20 @@ const filterData = async (req, res) => {
         { $match: { ...query, region: { $ne: '' } } },
         { $group: { _id: '$region', count: { $sum: 1 } } },
         { $sort: { count: -1 } }
+      ]),
+      
+      // Stats for filtered data
+      Data.aggregate([
+        { $match: query },
+        {
+          $group: {
+            _id: null,
+            totalRecords: { $sum: 1 },
+            avgIntensity: { $avg: '$intensity' },
+            avgRelevance: { $avg: '$relevance' },
+            avgLikelihood: { $avg: '$likelihood' }
+          }
+        }
       ])
     ]);
 
@@ -223,7 +238,8 @@ const filterData = async (req, res) => {
         trendsByYear,
         cityDistribution,
         sectorDistribution,
-        regionDistribution
+        regionDistribution,
+        stats: stats[0] || { totalRecords: 0, avgIntensity: 0, avgRelevance: 0, avgLikelihood: 0 }
       }
     });
   } catch (error) {

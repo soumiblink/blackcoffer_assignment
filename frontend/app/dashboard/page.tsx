@@ -80,7 +80,8 @@ export default function Dashboard() {
 
       if (hasFilters) {
         const response = await filterData(filterParams);
-        setData({ ...data!, ...response.data });
+        // Update data with filtered results
+        setData(response.data);
       } else {
         await loadDashboardData();
       }
