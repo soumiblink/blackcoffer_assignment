@@ -77,6 +77,8 @@ export default function Dashboard() {
   const handleFilterChange = async () => {
     try {
       setLoading(true);
+      
+      // Build filter params, converting empty strings to undefined
       const filterParams = {
         endYear: filters.endYear || undefined,
         topic: filters.topic || undefined,
@@ -89,7 +91,8 @@ export default function Dashboard() {
         city: filters.city || undefined,
       };
 
-      const hasFilters = Object.values(filterParams).some(v => v !== undefined);
+      // Check if any filter has an actual value (not undefined)
+      const hasFilters = Object.values(filterParams).some(v => v !== undefined && v !== '');
 
       console.log('Applying filters:', filterParams);
       console.log('Has filters:', hasFilters);
@@ -120,6 +123,7 @@ export default function Dashboard() {
         
         setData(filteredData);
       } else {
+        console.log('No filters applied, loading full dashboard data');
         await loadDashboardData();
       }
     } catch (error) {
