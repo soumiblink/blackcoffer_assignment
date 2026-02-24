@@ -143,20 +143,50 @@ const getDashboardData = async (req, res) => {
 };
 
 // Filter data
+// Filter data (FIXED VERSION)
 const filterData = async (req, res) => {
   try {
-    const { endYear, topic, sector, region, pestle, source, swot, country, city } = req.body;
-    
+    const {
+      endYear,
+      topic,
+      sector,
+      region,
+      pestle,
+      source,
+      swot,
+      country,
+      city
+    } = req.body;
+
     const query = {};
-    if (endYear) query.end_year = endYear;
-    if (topic) query.topic = topic;
-    if (sector) query.sector = sector;
-    if (region) query.region = region;
-    if (pestle) query.pestle = pestle;
-    if (source) query.source = source;
-    if (swot) query.swot = swot;
-    if (country) query.country = country;
-    if (city) query.city = city;
+
+    // Use case-insensitive regex for strings
+    if (endYear && endYear !== "All")
+      query.end_year = Number(endYear);
+
+    if (topic && topic !== "All")
+      query.topic = { $regex: `^${topic.trim()}$`, $options: "i" };
+
+    if (sector && sector !== "All")
+      query.sector = { $regex: `^${sector.trim()}$`, $options: "i" };
+
+    if (region && region !== "All")
+      query.region = { $regex: `^${region.trim()}$`, $options: "i" };
+
+    if (pestle && pestle !== "All")
+      query.pestle = { $regex: `^${pestle.trim()}$`, $options: "i" };
+
+    if (source && source !== "All")
+      query.source = { $regex: `^${source.trim()}$`, $options: "i" };
+
+    if (swot && swot !== "All")
+      query.swot = { $regex: `^${swot.trim()}$`, $options: "i" };
+
+    if (country && country !== "All")
+      query.country = { $regex: `^${country.trim()}$`, $options: "i" };
+
+    if (city && city !== "All")
+      query.city = { $regex: `^${city.trim()}$`, $options: "i" };
 
     const [
       intensityByCountry,
@@ -169,61 +199,60 @@ const filterData = async (req, res) => {
       stats
     ] = await Promise.all([
       Data.aggregate([
-        { $match: { ...query, country: { $ne: '' }, intensity: { $gt: 0 } } },
-        { $group: { _id: '$country', avgIntensity: { $avg: '$intensity' }, count: { $sum: 1 } } },
+        { $match: { ...query, country: { $ne: "" }, intensity: { $gt: 0 } } },
+        { $group: { _id: "$country", avgIntensity: { $avg: "$intensity" }, count: { $sum: 1 } } },
         { $sort: { avgIntensity: -1 } },
         { $limit: 15 }
       ]),
-      
+
       Data.aggregate([
-        { $match: { ...query, topic: { $ne: '' }, relevance: { $gt: 0 } } },
-        { $group: { _id: '$topic', avgRelevance: { $avg: '$relevance' }, count: { $sum: 1 } } },
+        { $match: { ...query, topic: { $ne: "" }, relevance: { $gt: 0 } } },
+        { $group: { _id: "$topic", avgRelevance: { $avg: "$relevance" }, count: { $sum: 1 } } },
         { $sort: { avgRelevance: -1 } },
         { $limit: 10 }
       ]),
-      
+
       Data.aggregate([
-        { $match: { ...query, region: { $ne: '' }, likelihood: { $gt: 0 } } },
-        { $group: { _id: '$region', avgLikelihood: { $avg: '$likelihood' }, count: { $sum: 1 } } },
+        { $match: { ...query, region: { $ne: "" }, likelihood: { $gt: 0 } } },
+        { $group: { _id: "$region", avgLikelihood: { $avg: "$likelihood" }, count: { $sum: 1 } } },
         { $sort: { avgLikelihood: -1 } }
       ]),
-      
+
       Data.aggregate([
-        { $match: { ...query, end_year: { $ne: '' }, intensity: { $gt: 0 } } },
-        { $group: { _id: '$end_year', avgIntensity: { $avg: '$intensity' }, count: { $sum: 1 } } },
+        { $match: { ...query, end_year: { $ne: "" }, intensity: { $gt: 0 } } },
+        { $group: { _id: "$end_year", avgIntensity: { $avg: "$intensity" }, count: { $sum: 1 } } },
         { $sort: { _id: 1 } },
         { $limit: 20 }
       ]),
-      
+
       Data.aggregate([
-        { $match: { ...query, city: { $ne: '' } } },
-        { $group: { _id: '$city', count: { $sum: 1 } } },
+        { $match: { ...query, city: { $ne: "" } } },
+        { $group: { _id: "$city", count: { $sum: 1 } } },
         { $sort: { count: -1 } },
         { $limit: 10 }
       ]),
-      
+
       Data.aggregate([
-        { $match: { ...query, sector: { $ne: '' } } },
-        { $group: { _id: '$sector', count: { $sum: 1 } } },
+        { $match: { ...query, sector: { $ne: "" } } },
+        { $group: { _id: "$sector", count: { $sum: 1 } } },
         { $sort: { count: -1 } }
       ]),
-      
+
       Data.aggregate([
-        { $match: { ...query, region: { $ne: '' } } },
-        { $group: { _id: '$region', count: { $sum: 1 } } },
+        { $match: { ...query, region: { $ne: "" } } },
+        { $group: { _id: "$region", count: { $sum: 1 } } },
         { $sort: { count: -1 } }
       ]),
-      
-      // Stats for filtered data
+
       Data.aggregate([
         { $match: query },
         {
           $group: {
             _id: null,
             totalRecords: { $sum: 1 },
-            avgIntensity: { $avg: '$intensity' },
-            avgRelevance: { $avg: '$relevance' },
-            avgLikelihood: { $avg: '$likelihood' }
+            avgIntensity: { $avg: "$intensity" },
+            avgRelevance: { $avg: "$relevance" },
+            avgLikelihood: { $avg: "$likelihood" }
           }
         }
       ])
@@ -239,17 +268,21 @@ const filterData = async (req, res) => {
         cityDistribution,
         sectorDistribution,
         regionDistribution,
-        stats: stats[0] || { totalRecords: 0, avgIntensity: 0, avgRelevance: 0, avgLikelihood: 0 }
+        stats:
+          stats[0] || {
+            totalRecords: 0,
+            avgIntensity: 0,
+            avgRelevance: 0,
+            avgLikelihood: 0
+          }
       }
     });
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
-  }
-};
 
-module.exports = {
-  getAllData,
-  getFilterOptions,
-  getDashboardData,
-  filterData
+  } catch (error) {
+    console.error("Filter error:", error);
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
 };
